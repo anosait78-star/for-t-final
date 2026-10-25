@@ -1,12 +1,15 @@
 import Link from "next/link";
 import type { Dictionary } from "@/app/lib/i18n/dictionaries";
+import { COACHES_NAV_ENABLED } from "@/app/lib/site-config";
 
 export function BottomNav({ dict }: { dict: Dictionary }) {
   const items = [
     { href: "/", label: dict.nav.home, icon: HomeIcon },
     { href: "/courses", label: dict.nav.courses, icon: CoursesIcon },
     { href: "/certificates", label: dict.nav.certificates, icon: CertificateIcon },
-    { href: "/coaches", label: dict.nav.coaches, icon: CoachesIcon },
+    COACHES_NAV_ENABLED
+      ? { href: "/coaches", label: dict.nav.coaches, icon: CoachesIcon }
+      : { href: "/foundations", label: dict.nav.foundations, icon: FoundationsIcon },
   ];
 
   return (
@@ -66,6 +69,14 @@ function CoachesIcon({ className }: { className?: string }) {
     <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8">
       <circle cx="12" cy="8" r="3.2" />
       <path strokeLinecap="round" d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6" />
+    </svg>
+  );
+}
+
+function FoundationsIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3 4.5 6.5v5.2c0 4.3 3.1 7.6 7.5 8.8 4.4-1.2 7.5-4.5 7.5-8.8V6.5L12 3Z" />
     </svg>
   );
 }

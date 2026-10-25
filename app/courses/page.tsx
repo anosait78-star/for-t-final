@@ -35,7 +35,8 @@ export default async function CoursesPage() {
                   {course.description}
                 </p>
                 <span className="font-semibold text-royal-600">
-                  {course.price.toString()} {dict.currency}
+                  {dict.currency}
+                  {course.price.toString()}
                 </span>
               </div>
             </div>

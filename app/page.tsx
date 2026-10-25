@@ -4,6 +4,7 @@ import { PlaceholderImage } from "@/app/components/PlaceholderImage";
 import { PersonAvatar } from "@/app/components/PersonAvatar";
 import { getLocale } from "@/app/lib/i18n/locale";
 import { getDictionary } from "@/app/lib/i18n/dictionaries";
+import { COACHES_NAV_ENABLED } from "@/app/lib/site-config";
 
 export default async function HomePage() {
   const locale = await getLocale();
@@ -16,6 +17,7 @@ export default async function HomePage() {
     foundationCount,
     certificateCount,
     coachCount,
+    courseCount,
     countryGroups,
     featuredCourse,
   ] = await Promise.all([
@@ -28,6 +30,7 @@ export default async function HomePage() {
     prisma.accreditedFoundation.count(),
     prisma.certificate.count(),
     prisma.coach.count(),
+    prisma.course.count(),
     prisma.certificate.groupBy({ by: ["country"] }),
     prisma.course.findFirst({ orderBy: { price: "desc" } }),
   ]);
@@ -37,7 +40,9 @@ export default async function HomePage() {
   const credibility = [
     { value: foundationCount, label: dict.home.credibilityFoundations },
     { value: certificateCount, label: dict.home.credibilityCertificates },
-    { value: coachCount, label: dict.home.credibilityCoaches },
+    COACHES_NAV_ENABLED
+      ? { value: coachCount, label: dict.home.credibilityCoaches }
+      : { value: courseCount, label: dict.home.credibilityCourses },
   ];
 
   const whyItems = [
@@ -51,11 +56,17 @@ export default async function HomePage() {
       title: dict.home.whyVerifiableTitle,
       desc: dict.home.whyVerifiableDesc,
     },
-    {
-      icon: CoachIcon,
-      title: dict.home.whyCoachesTitle,
-      desc: dict.home.whyCoachesDesc,
-    },
+    COACHES_NAV_ENABLED
+      ? {
+          icon: CoachIcon,
+          title: dict.home.whyCoachesTitle,
+          desc: dict.home.whyCoachesDesc,
+        }
+      : {
+          icon: CoachIcon,
+          title: dict.home.whyFlexibleTitle,
+          desc: dict.home.whyFlexibleDesc,
+        },
     {
       icon: GlobeIcon,
       title: dict.home.whyReachTitle,
@@ -164,7 +175,8 @@ export default async function HomePage() {
                 </p>
                 <div className="flex items-center gap-4">
                   <span className="font-serif-display text-xl font-semibold text-royal-600">
-                    {featuredCourse.price.toString()} {dict.currency}
+                    {dict.currency}
+                    {featuredCourse.price.toString()}
                   </span>
                   <Link href="/courses" className="btn-gold">
                     {dict.home.browseCourses}
@@ -226,7 +238,8 @@ export default async function HomePage() {
                       {course.description}
                     </p>
                     <span className="font-semibold text-royal-600">
-                      {course.price.toString()} {dict.currency}
+                      {dict.currency}
+                      {course.price.toString()}
                     </span>
                   </div>
                 </div>
@@ -254,7 +267,8 @@ export default async function HomePage() {
                       {course.description}
                     </p>
                     <span className="font-semibold text-royal-600">
-                      {course.price.toString()} {dict.currency}
+                      {dict.currency}
+                      {course.price.toString()}
                     </span>
                   </div>
                 </div>
@@ -264,6 +278,7 @@ export default async function HomePage() {
         )}
       </section>
 
+      {COACHES_NAV_ENABLED && (
       <section className="bg-white py-12 sm:py-16">
         <div className="px-4 sm:mx-auto sm:max-w-6xl">
           <SectionHeading title={dict.home.ourCoaches} href="/coaches" viewAll={dict.home.viewAll} />
@@ -310,6 +325,7 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+      )}
 
       <section className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
         <SectionHeading
@@ -347,20 +363,23 @@ export default async function HomePage() {
 function FoundationsMarquee({
   foundations,
 }: {
-  foundations: { id: number; name: string; imageUrl: string | null }[];
+  foundations: { id: number; name: string }[];
 }) {
   const track = [...foundations, ...foundations];
   return (
     <div className="marquee-mask overflow-hidden">
-      <div className="flex w-max animate-marquee items-center gap-10">
+      <div className="flex w-max animate-marquee items-center gap-4">
         {track.map((foundation, i) => (
-          <div key={`${foundation.id}-${i}`} className="w-28 shrink-0 text-center">
-            <PlaceholderImage
-              src={foundation.imageUrl}
-              alt={foundation.name}
-              className="mx-auto mb-2 h-14 object-contain grayscale transition-all hover:grayscale-0"
-            />
-            <p className="truncate text-xs text-slate-500">{foundation.name}</p>
+          <div
+            key={`${foundation.id}-${i}`}
+            className="card flex shrink-0 items-center gap-2.5 px-5 py-3"
+          >
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-navy-900 font-serif-display text-xs font-semibold text-gold-400">
+              {foundation.name.trim().charAt(0).toUpperCase()}
+            </span>
+            <p className="whitespace-nowrap text-sm font-medium text-navy-900">
+              {foundation.name}
+            </p>
           </div>
         ))}
       </div>

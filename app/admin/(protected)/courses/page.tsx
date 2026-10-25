@@ -57,7 +57,8 @@ export default async function AdminCoursesPage(
               <tr key={course.id} className="border-t border-hairline">
                 <td className="p-3">{course.name}</td>
                 <td className="p-3">
-                  {course.price.toString()} {dict.currency}
+                  {dict.currency}
+                  {course.price.toString()}
                 </td>
                 <td className="p-3 flex gap-3 justify-end">
                   <Link

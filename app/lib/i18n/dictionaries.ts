@@ -6,7 +6,7 @@ const dictionaries = {
   en: {
     siteName: "FOR T",
     tagline: "International Training & Accreditation",
-    currency: "EGP",
+    currency: "$",
     nav: {
       home: "Home",
       courses: "Courses",
@@ -33,6 +33,7 @@ const dictionaries = {
       credibilityFoundations: "Accredited Foundations",
       credibilityCertificates: "Certificates Issued",
       credibilityCoaches: "Expert Coaches",
+      credibilityCourses: "Accredited Courses",
       latestCourses: "Latest Courses",
       viewAll: "View all",
       noCourses: "No courses added yet.",
@@ -50,6 +51,9 @@ const dictionaries = {
       whyCoachesTitle: "Expert Coaches",
       whyCoachesDesc:
         "Learn from professional coaches with real, hands-on experience in their field.",
+      whyFlexibleTitle: "Flexible Learning",
+      whyFlexibleDesc:
+        "Study online or offline, at your own pace, with a format that fits your schedule.",
       whyReachTitle: "Global Reach",
       whyReachDesc: "Students certified across {count}+ countries and counting.",
       whyReachDescFallback: "Certificates recognized internationally by accredited foundations.",
@@ -171,7 +175,7 @@ const dictionaries = {
   ar: {
     siteName: "FOR T",
     tagline: "هيئة دولية للتدريب والاعتماد",
-    currency: "ج.م",
+    currency: "$",
     nav: {
       home: "الرئيسية",
       courses: "الكورسات",
@@ -198,6 +202,7 @@ const dictionaries = {
       credibilityFoundations: "مؤسسات معتمدة",
       credibilityCertificates: "شهادة صادرة",
       credibilityCoaches: "مدرب محترف",
+      credibilityCourses: "كورس معتمد",
       latestCourses: "أحدث الكورسات",
       viewAll: "عرض الكل",
       noCourses: "لا يوجد كورسات مضافة بعد.",
@@ -212,6 +217,8 @@ const dictionaries = {
       whyVerifiableDesc: "كل شهادة ليها كود فريد أي حد يقدر يتأكد منه أونلاين في أي وقت.",
       whyCoachesTitle: "مدربين محترفين",
       whyCoachesDesc: "اتعلم مع مدربين محترفين عندهم خبرة عملية حقيقية في مجالهم.",
+      whyFlexibleTitle: "مرونة في التعلم",
+      whyFlexibleDesc: "ادرس أونلاين أو أوفلاين، في وقتك اللي يناسبك، بشكل يتماشى مع جدولك.",
       whyReachTitle: "انتشار عالمي",
       whyReachDesc: "طلاب حاصلين على شهادات من أكتر من {count} دولة وفي زيادة مستمرة.",
       whyReachDescFallback: "شهادات معترف بيها دوليًا من مؤسسات اعتماد معتمدة.",

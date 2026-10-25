@@ -9,6 +9,7 @@ import { LanguageSwitcher } from "@/app/components/LanguageSwitcher";
 import { MobileNav } from "@/app/components/MobileNav";
 import { BottomNav } from "@/app/components/BottomNav";
 import { LANGUAGE_SWITCHER_ENABLED } from "@/app/lib/i18n/config";
+import { COACHES_NAV_ENABLED } from "@/app/lib/site-config";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -35,7 +36,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const navLinks = [
     { href: "/", label: dict.nav.home },
     { href: "/courses", label: dict.nav.courses },
-    { href: "/coaches", label: dict.nav.coaches },
+    ...(COACHES_NAV_ENABLED ? [{ href: "/coaches", label: dict.nav.coaches }] : []),
     { href: "/foundations", label: dict.nav.foundations },
     { href: "/certificates", label: dict.nav.certificates },
   ];

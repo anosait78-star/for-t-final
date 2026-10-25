@@ -1,5 +1,4 @@
 import { prisma } from "@/app/lib/db";
-import { PlaceholderImage } from "@/app/components/PlaceholderImage";
 import { getLocale } from "@/app/lib/i18n/locale";
 import { getDictionary } from "@/app/lib/i18n/dictionaries";
 
@@ -20,19 +19,24 @@ export default async function FoundationsPage() {
       {foundations.length === 0 ? (
         <p className="text-slate-500">{dict.foundations.empty}</p>
       ) : (
-        <div className="grid grid-cols-2 items-center gap-4 sm:grid-cols-4 sm:gap-8">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4">
           {foundations.map((foundation) => (
-            <div key={foundation.id} className="card p-4 text-center sm:p-6">
-              <PlaceholderImage
-                src={foundation.imageUrl}
-                alt={foundation.name}
-                className="mx-auto mb-2 h-16 object-contain sm:h-20"
-              />
-              <p className="text-sm text-slate-600">{foundation.name}</p>
-            </div>
+            <FoundationCard key={foundation.id} name={foundation.name} />
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+function FoundationCard({ name }: { name: string }) {
+  const initial = name.trim().charAt(0).toUpperCase();
+  return (
+    <div className="card flex flex-col items-center gap-3 p-6 text-center transition-shadow hover:shadow-md">
+      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-navy-900 font-serif-display text-xl font-semibold text-gold-400">
+        {initial}
+      </span>
+      <p className="font-serif-display font-semibold text-navy-900">{name}</p>
     </div>
   );
 }
