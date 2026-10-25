@@ -11,10 +11,11 @@ export default async function CertificateSearchPage(
 
   const { code } = await props.searchParams;
   const trimmedCode = typeof code === "string" ? code.trim() : "";
+  const normalizedCode = trimmedCode.toUpperCase();
 
-  const certificate = trimmedCode
+  const certificate = normalizedCode
     ? await prisma.certificate.findUnique({
-        where: { certificateCode: trimmedCode },
+        where: { certificateCode: normalizedCode },
         include: { accreditedFoundation: true },
       })
     : null;
