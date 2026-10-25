@@ -9,18 +9,30 @@ export default async function HomePage() {
   const locale = await getLocale();
   const dict = getDictionary(locale);
 
-  const [coaches, foundations, courses, foundationCount, certificateCount, coachCount] =
-    await Promise.all([
-      prisma.coach.findMany({ orderBy: { createdAt: "desc" }, take: 3 }),
-      prisma.accreditedFoundation.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 3,
-      }),
-      prisma.course.findMany({ orderBy: { createdAt: "desc" }, take: 3 }),
-      prisma.accreditedFoundation.count(),
-      prisma.certificate.count(),
-      prisma.coach.count(),
-    ]);
+  const [
+    coaches,
+    foundations,
+    courses,
+    foundationCount,
+    certificateCount,
+    coachCount,
+    countryGroups,
+    featuredCourse,
+  ] = await Promise.all([
+    prisma.coach.findMany({ orderBy: { createdAt: "desc" }, take: 3 }),
+    prisma.accreditedFoundation.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 10,
+    }),
+    prisma.course.findMany({ orderBy: { createdAt: "desc" }, take: 3 }),
+    prisma.accreditedFoundation.count(),
+    prisma.certificate.count(),
+    prisma.coach.count(),
+    prisma.certificate.groupBy({ by: ["country"] }),
+    prisma.course.findFirst({ orderBy: { price: "desc" } }),
+  ]);
+
+  const countryCount = countryGroups.length;
 
   const credibility = [
     { value: foundationCount, label: dict.home.credibilityFoundations },
@@ -28,8 +40,54 @@ export default async function HomePage() {
     { value: coachCount, label: dict.home.credibilityCoaches },
   ];
 
+  const whyItems = [
+    {
+      icon: ShieldIcon,
+      title: dict.home.whyAccreditedTitle,
+      desc: dict.home.whyAccreditedDesc,
+    },
+    {
+      icon: CheckBadgeIcon,
+      title: dict.home.whyVerifiableTitle,
+      desc: dict.home.whyVerifiableDesc,
+    },
+    {
+      icon: CoachIcon,
+      title: dict.home.whyCoachesTitle,
+      desc: dict.home.whyCoachesDesc,
+    },
+    {
+      icon: GlobeIcon,
+      title: dict.home.whyReachTitle,
+      desc:
+        countryCount >= 2
+          ? dict.home.whyReachDesc.replace("{count}", String(countryCount))
+          : dict.home.whyReachDescFallback,
+    },
+  ];
+
+  const howSteps = [
+    { title: dict.home.howStep1Title, desc: dict.home.howStep1Desc },
+    { title: dict.home.howStep2Title, desc: dict.home.howStep2Desc },
+    { title: dict.home.howStep3Title, desc: dict.home.howStep3Desc },
+    { title: dict.home.howStep4Title, desc: dict.home.howStep4Desc },
+  ];
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    name: dict.siteName,
+    description: dict.home.heroSubtitle,
+    foundingDate: "2024",
+    areaServed: "Worldwide",
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="relative overflow-hidden bg-navy-900 text-white">
         <EmblemWatermark />
         <div className="relative mx-auto max-w-6xl px-4 py-14 text-center sm:py-24">
@@ -70,6 +128,71 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+        <h2 className="font-serif-display mb-8 text-center text-2xl font-semibold sm:mb-10 sm:text-3xl">
+          {dict.home.whyTitle}
+        </h2>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {whyItems.map((item) => (
+            <div key={item.title} className="card p-6 text-center">
+              <item.icon className="mx-auto mb-3 h-9 w-9 text-gold-600" />
+              <h3 className="mb-1.5 font-serif-display font-semibold">{item.title}</h3>
+              <p className="text-sm leading-relaxed text-slate-500">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {featuredCourse && (
+        <section className="bg-white py-12 sm:py-16">
+          <div className="mx-auto max-w-6xl px-4">
+            <div className="card grid grid-cols-1 overflow-hidden sm:grid-cols-2">
+              <PlaceholderImage
+                src={featuredCourse.imageUrl}
+                alt={featuredCourse.name}
+                className="h-56 w-full object-cover sm:h-full"
+              />
+              <div className="flex flex-col justify-center p-6 sm:p-10">
+                <span className="mb-3 inline-block w-fit rounded-full bg-gold-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-gold-600">
+                  {dict.home.featuredBadge}
+                </span>
+                <h3 className="font-serif-display mb-3 text-2xl font-semibold sm:text-3xl">
+                  {featuredCourse.name}
+                </h3>
+                <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-slate-500 sm:text-base">
+                  {featuredCourse.description}
+                </p>
+                <div className="flex items-center gap-4">
+                  <span className="font-serif-display text-xl font-semibold text-royal-600">
+                    {featuredCourse.price.toString()} {dict.currency}
+                  </span>
+                  <Link href="/courses" className="btn-gold">
+                    {dict.home.browseCourses}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section className="mx-auto max-w-6xl px-4 py-12 sm:py-16">
+        <h2 className="font-serif-display mb-8 text-center text-2xl font-semibold sm:mb-10 sm:text-3xl">
+          {dict.home.howTitle}
+        </h2>
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {howSteps.map((step, i) => (
+            <div key={step.title} className="relative text-center">
+              <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 font-serif-display text-lg font-semibold text-gold-400">
+                {i + 1}
+              </div>
+              <h3 className="mb-1.5 font-serif-display font-semibold">{step.title}</h3>
+              <p className="text-sm leading-relaxed text-slate-500">{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <section className="py-12 sm:mx-auto sm:max-w-6xl sm:px-4 sm:py-16">
         <div className="px-4 sm:px-0">
           <SectionHeading title={dict.home.latestCourses} href="/courses" viewAll={dict.home.viewAll} />
@@ -80,11 +203,16 @@ export default async function HomePage() {
           <>
             {/* mobile: horizontal snap carousel, built for touch — not a shrunk grid */}
             <div className="flex snap-x gap-4 overflow-x-auto px-4 pb-2 sm:hidden">
-              {courses.map((course) => (
+              {courses.map((course, i) => (
                 <div
                   key={course.id}
-                  className="card w-[78%] shrink-0 snap-start overflow-hidden"
+                  className="card relative w-[78%] shrink-0 snap-start overflow-hidden"
                 >
+                  {i === 0 && (
+                    <span className="absolute start-3 top-3 z-10 rounded-full bg-gold-500 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-navy-950 shadow">
+                      {dict.home.newBadge}
+                    </span>
+                  )}
                   <PlaceholderImage
                     src={course.imageUrl}
                     alt={course.name}
@@ -106,8 +234,13 @@ export default async function HomePage() {
             </div>
 
             <div className="hidden grid-cols-1 gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
-              {courses.map((course) => (
-                <div key={course.id} className="card overflow-hidden">
+              {courses.map((course, i) => (
+                <div key={course.id} className="card relative overflow-hidden">
+                  {i === 0 && (
+                    <span className="absolute start-3 top-3 z-10 rounded-full bg-gold-500 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-navy-950 shadow">
+                      {dict.home.newBadge}
+                    </span>
+                  )}
                   <PlaceholderImage
                     src={course.imageUrl}
                     alt={course.name}
@@ -165,6 +298,11 @@ export default async function HomePage() {
                     <h3 className="font-serif-display font-semibold">
                       {coach.name}
                     </h3>
+                    {coach.bio && (
+                      <p className="mx-auto mt-1 line-clamp-2 max-w-xs text-sm text-slate-500">
+                        {coach.bio}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
@@ -182,20 +320,50 @@ export default async function HomePage() {
         {foundations.length === 0 ? (
           <p className="text-slate-500">{dict.home.noFoundations}</p>
         ) : (
-          <div className="grid grid-cols-3 items-center gap-4 sm:grid-cols-3 sm:gap-6">
-            {foundations.map((foundation) => (
-              <div key={foundation.id} className="text-center">
-                <PlaceholderImage
-                  src={foundation.imageUrl}
-                  alt={foundation.name}
-                  className="mx-auto mb-2 h-16 object-contain"
-                />
-                <p className="text-sm text-slate-600">{foundation.name}</p>
-              </div>
-            ))}
-          </div>
+          <FoundationsMarquee foundations={foundations} />
         )}
       </section>
+
+      <section className="bg-navy-900 text-white">
+        <div className="mx-auto max-w-4xl px-4 py-14 text-center sm:py-20">
+          <h2 className="font-serif-display mb-3 text-2xl font-semibold sm:text-3xl">
+            {dict.home.ctaTitle}
+          </h2>
+          <p className="mx-auto mb-8 max-w-xl text-sm text-slate-300 sm:text-base">
+            {dict.home.ctaSubtitle}
+          </p>
+          <Link
+            href="/courses"
+            className="inline-block w-full rounded-md bg-gold-500 px-7 py-3.5 font-semibold text-navy-950 transition-colors hover:bg-gold-400 sm:w-auto sm:py-3"
+          >
+            {dict.home.ctaButton}
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function FoundationsMarquee({
+  foundations,
+}: {
+  foundations: { id: number; name: string; imageUrl: string | null }[];
+}) {
+  const track = [...foundations, ...foundations];
+  return (
+    <div className="marquee-mask overflow-hidden">
+      <div className="flex w-max animate-marquee items-center gap-10">
+        {track.map((foundation, i) => (
+          <div key={`${foundation.id}-${i}`} className="w-28 shrink-0 text-center">
+            <PlaceholderImage
+              src={foundation.imageUrl}
+              alt={foundation.name}
+              className="mx-auto mb-2 h-14 object-contain grayscale transition-all hover:grayscale-0"
+            />
+            <p className="truncate text-xs text-slate-500">{foundation.name}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -216,6 +384,42 @@ function SectionHeading({
         {viewAll}
       </Link>
     </div>
+  );
+}
+
+function ShieldIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.6">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 3 4.5 6v6c0 4.4 3.1 7.7 7.5 9 4.4-1.3 7.5-4.6 7.5-9V6L12 3Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
+
+function CheckBadgeIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.6">
+      <path strokeLinecap="round" strokeLinejoin="round" d="m12 3 2.2 1.8 2.8-.3 1 2.6 2.6 1-.3 2.8L22 13l-1.8 2.2.3 2.8-2.6 1-1 2.6-2.8-.3L12 23l-2.2-1.8-2.8.3-1-2.6-2.6-1 .3-2.8L2 13l1.8-2.2-.3-2.8 2.6-1 1-2.6 2.8.3L12 3Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="m9 12.5 2 2 4-4.5" />
+    </svg>
+  );
+}
+
+function CoachIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.6">
+      <circle cx="12" cy="8" r="3.3" />
+      <path strokeLinecap="round" d="M5 20c0-3.7 3.1-6.2 7-6.2s7 2.5 7 6.2" />
+    </svg>
+  );
+}
+
+function GlobeIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.6">
+      <circle cx="12" cy="12" r="9" />
+      <path strokeLinecap="round" d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z" />
+    </svg>
   );
 }
 
