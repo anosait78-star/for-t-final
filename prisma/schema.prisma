@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  name        String   @map("course_name")
+  description String   @map("course_description")
+  price       Decimal  @db.Decimal(10, 2)
+  imageUrl    String?  @map("image_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("courses")
+}
+
+model Coach {
+  id        Int      @id @default(autoincrement())
+  name      String   @map("coach_name")
+  bio       String?
+  imageUrl  String?  @map("image_url")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("coaches")
+}
+
+model AccreditedFoundation {
+  id           Int           @id @default(autoincrement())
+  name         String
+  imageUrl     String?       @map("image_url")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  certificates Certificate[]
+
+  @@map("accredited_foundations")
+}
+
+model Certificate {
+  certificateCode      String   @id @map("certificate_code")
+  studentName          String   @map("student_name")
+  courseName           String   @map("course_name")
+  nationalNumber       String   @map("national_number")
+  date                 DateTime @default(now())
+  studentPictureUrl    String?  @map("student_picture_url")
+  country              String   @default("Egypt")
+
+  accreditedFoundationId Int                  @map("accredited_foundation_id")
+  accreditedFoundation   AccreditedFoundation @relation(fields: [accreditedFoundationId], references: [id], onDelete: Restrict)
+
+  @@index([nationalNumber])
+  @@map("certificates")
+}

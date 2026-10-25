@@ -36,6 +36,17 @@ yarn-error.log*
 # vercel
 .vercel
 
+# AI tooling (not part of the app)
+/.claude
+/.windsurf
+/.agents
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/app/generated/prisma
+
+# one-off migration script output (contains real student PII)
+/scripts/image-mapping.json
+/scripts/old-data-export/
