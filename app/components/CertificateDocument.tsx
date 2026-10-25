@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { PlaceholderImage } from "@/app/components/PlaceholderImage";
+import { PersonAvatar } from "@/app/components/PersonAvatar";
+import { PrintButton } from "@/app/components/PrintButton";
 import type { Dictionary, Locale } from "@/app/lib/i18n/dictionaries";
 
 type CertificateData = {
@@ -28,18 +29,19 @@ export function CertificateDocument({
   );
 
   return (
-    <div className="relative mx-auto max-w-3xl">
+    <div className="relative mx-auto max-w-3xl pb-36 sm:pb-0">
       {/* outer gold frame */}
       <div className="rounded-md bg-gradient-to-br from-gold-500 via-gold-400 to-gold-600 p-[3px] shadow-xl shadow-navy-900/10">
         <div className="rounded-[5px] border border-gold-400/60 bg-white p-1">
           {/* inner hairline frame */}
-          <div className="relative overflow-hidden rounded-[3px] border-2 border-navy-900/80 px-6 py-10 sm:px-14 sm:py-14">
+          <div className="relative overflow-hidden rounded-[3px] border-2 border-navy-900/80 px-5 py-8 sm:px-14 sm:py-14">
             <GuillochePattern />
 
-            <PlaceholderImage
+            {/* desktop/tablet: photo badge pinned to the corner */}
+            <PersonAvatar
               src={certificate.studentPictureUrl}
               alt={certificate.studentName}
-              className="absolute end-6 top-6 h-16 w-16 rounded-full border-2 border-gold-400 object-cover shadow-md sm:end-10 sm:top-10 sm:h-20 sm:w-20"
+              className="absolute end-10 top-10 hidden h-20 w-20 rounded-full border-2 border-gold-400 object-cover shadow-md sm:block"
             />
 
             <Image
@@ -52,6 +54,13 @@ export function CertificateDocument({
             />
 
             <div className="relative flex flex-col items-center text-center">
+              {/* mobile: photo shown inline above the seal, full-width readable layout */}
+              <PersonAvatar
+                src={certificate.studentPictureUrl}
+                alt={certificate.studentName}
+                className="mb-4 h-24 w-24 rounded-full border-2 border-gold-400 object-cover shadow-md sm:hidden"
+              />
+
               <Image
                 src="/logo.png"
                 alt="FOR T"
@@ -89,7 +98,7 @@ export function CertificateDocument({
                 .
               </p>
 
-              <div className="mt-10 grid w-full max-w-md grid-cols-2 gap-x-8 gap-y-3 border-t border-hairline pt-6 text-start text-xs sm:text-sm">
+              <div className="mt-10 grid w-full max-w-md grid-cols-1 gap-x-8 gap-y-4 border-t border-hairline pt-6 text-start text-xs sm:grid-cols-2 sm:gap-y-3 sm:text-sm">
                 <Detail label={dict.certificate.nationalNumber} value={certificate.nationalNumber} />
                 <Detail label={dict.certificate.issuedOn} value={formattedDate} />
                 <Detail label={dict.certificate.country} value={certificate.country} />
@@ -116,6 +125,11 @@ export function CertificateDocument({
         {dict.certificate.verifyNote}{" "}
         <span className="font-medium text-royal-600">for-t.com/certificates</span>
       </p>
+
+      {/* mobile: sticky action bar (sits above the bottom nav) so download/print is always reachable */}
+      <div className="fixed inset-x-0 bottom-16 z-40 border-t border-hairline bg-white/95 p-3 backdrop-blur sm:hidden print:hidden">
+        <PrintButton label={dict.certificate.download} className="btn-gold w-full" />
+      </div>
     </div>
   );
 }

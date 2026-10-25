@@ -14,6 +14,8 @@ const dictionaries = {
       foundations: "Accredited Foundations",
       certificates: "Verify Certificate",
       adminLogin: "Admin Login",
+      menu: "Menu",
+      closeMenu: "Close menu",
     },
     footer: {
       rights: "All rights reserved.",
@@ -72,6 +74,7 @@ const dictionaries = {
       issuedOn: "Issued on",
       authorizedBy: "Authorized Signature",
       verifyNote: "Authenticity can be verified anytime at",
+      download: "Download / Print",
     },
     admin: {
       login: "Admin Login",
@@ -149,6 +152,8 @@ const dictionaries = {
       foundations: "المؤسسات المعتمدة",
       certificates: "التحقق من شهادة",
       adminLogin: "دخول الإدارة",
+      menu: "القائمة",
+      closeMenu: "إغلاق القائمة",
     },
     footer: {
       rights: "جميع الحقوق محفوظة.",
@@ -207,6 +212,7 @@ const dictionaries = {
       issuedOn: "صدرت بتاريخ",
       authorizedBy: "التوقيع المعتمد",
       verifyNote: "يمكن التحقق من صحة الشهادة في أي وقت عبر",
+      download: "تحميل / طباعة",
     },
     admin: {
       login: "دخول الإدارة",

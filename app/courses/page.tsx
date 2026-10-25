@@ -12,14 +12,14 @@ export default async function CoursesPage() {
   });
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-16">
-      <h1 className="font-serif-display mb-8 border-b border-hairline pb-4 text-3xl font-semibold">
+    <div className="mx-auto max-w-6xl px-4 py-10 sm:py-16">
+      <h1 className="font-serif-display mb-6 border-b border-hairline pb-4 text-2xl font-semibold sm:mb-8 sm:text-3xl">
         {dict.courses.title}
       </h1>
       {courses.length === 0 ? (
         <p className="text-slate-500">{dict.courses.empty}</p>
       ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
           {courses.map((course) => (
             <div key={course.id} className="card overflow-hidden">
               <PlaceholderImage

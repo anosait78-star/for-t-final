@@ -1,4 +1,4 @@
-const FALLBACK = "/placeholder.svg";
+const FALLBACK = "/entity-placeholder.svg";
 
 export function PlaceholderImage({
   src,

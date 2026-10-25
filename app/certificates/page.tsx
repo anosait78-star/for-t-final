@@ -20,15 +20,15 @@ export default async function CertificateSearchPage(
     : null;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16">
-      <h1 className="font-serif-display mb-2 text-center text-3xl font-semibold">
+    <div className="mx-auto max-w-4xl px-4 py-10 sm:py-16">
+      <h1 className="font-serif-display mb-2 text-center text-2xl font-semibold sm:text-3xl">
         {dict.certificate.title}
       </h1>
-      <p className="mb-8 text-center text-slate-500">
+      <p className="mb-6 text-center text-sm text-slate-500 sm:mb-8 sm:text-base">
         {dict.certificate.subtitle}
       </p>
 
-      <form className="mx-auto mb-10 flex max-w-2xl gap-2">
+      <form className="mx-auto mb-8 flex max-w-2xl flex-col gap-2 sm:mb-10 sm:flex-row">
         <input
           type="text"
           name="code"
