@@ -2,6 +2,8 @@
 
 Rebuild of the original ASP.NET Core SportsAcademy site using Next.js + Prisma + Postgres (Neon) + Cloudinary, built to deploy on Vercel.
 
+> **Official repository:** https://github.com/anosait78-star/for-t-final.git — this is the main repo for this project; deploy and push here.
+
 ## Stack
 
 - Next.js 16 (App Router) + TypeScript + Tailwind CSS
