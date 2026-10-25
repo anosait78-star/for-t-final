@@ -32,11 +32,11 @@ export default async function AdminProtectedLayout({
       <aside className="flex w-60 shrink-0 flex-col gap-1 border-e border-navy-800 bg-navy-900 p-4 text-white">
         <div className="mb-4 flex items-center gap-2 px-2 pb-4 border-b border-white/10">
           <Image
-            src="/logo.png"
+            src="/logo-light.svg"
             alt="FOR T"
-            width={32}
-            height={32}
-            className="h-8 w-8 rounded-full bg-white/95 object-contain p-1"
+            width={174}
+            height={200}
+            className="h-9 w-auto object-contain"
           />
           <span className="font-serif-display font-semibold">
             {dict.siteName}

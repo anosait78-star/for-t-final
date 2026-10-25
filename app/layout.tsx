@@ -50,16 +50,14 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <header className="sticky top-0 z-30 bg-navy-900 text-white border-b border-gold-600/40">
           <nav className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2 sm:gap-4 sm:px-4 sm:py-3">
             <Link href="/" className="flex min-w-0 items-center gap-2 sm:gap-3">
-              <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white shadow-md shadow-navy-950/40 ring-2 ring-gold-400/50 sm:h-20 sm:w-20">
-                <Image
-                  src="/logo.png"
-                  alt="FOR T"
-                  width={80}
-                  height={80}
-                  className="h-[92%] w-[92%] object-contain"
-                  priority
-                />
-              </span>
+              <Image
+                src="/logo-light.svg"
+                alt="FOR T"
+                width={174}
+                height={200}
+                className="h-16 w-auto shrink-0 object-contain sm:h-20"
+                priority
+              />
               <span className="min-w-0 leading-tight">
                 <span className="block truncate font-serif-display text-base font-semibold tracking-wide sm:text-lg">
                   {dict.siteName}
@@ -106,15 +104,13 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           <div className="mx-auto max-w-6xl px-4 py-12 grid grid-cols-1 sm:grid-cols-3 gap-10">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <span className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-white shadow-lg shadow-black/30 ring-2 ring-gold-400/40">
-                  <Image
-                    src="/logo.png"
-                    alt="FOR T"
-                    width={80}
-                    height={80}
-                    className="h-[94%] w-[94%] object-contain"
-                  />
-                </span>
+                <Image
+                  src="/logo-light.svg"
+                  alt="FOR T"
+                  width={174}
+                  height={200}
+                  className="h-16 w-auto shrink-0 object-contain"
+                />
                 <span className="leading-tight">
                   <span className="block font-serif-display text-lg font-semibold text-white">
                     {dict.siteName}

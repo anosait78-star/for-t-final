@@ -11,11 +11,11 @@ export default async function AdminLoginPage() {
     <div className="mx-auto max-w-sm px-4 py-24">
       <div className="card p-8">
         <Image
-          src="/logo.png"
+          src="/logo.svg"
           alt="FOR T"
-          width={56}
-          height={56}
-          className="mx-auto mb-4 h-14 w-14 rounded-full border border-gold-400 object-contain p-1"
+          width={174}
+          height={200}
+          className="mx-auto mb-4 h-16 w-auto object-contain"
         />
         <h1 className="font-serif-display mb-6 text-center text-2xl font-semibold">
           {dict.admin.login}

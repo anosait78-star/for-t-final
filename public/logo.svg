@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 230" width="200" height="230">
+  <circle cx="100" cy="86" r="62" fill="none" stroke="#0b1e3f" stroke-width="10"/>
+  <polygon points="100,52 146,78 100,104 54,78" fill="#b8912f"/>
+  <rect x="86" y="78" width="28" height="16" rx="3" fill="#0b1e3f"/>
+  <path d="M141,78 L141,104" stroke="#b8912f" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="141" cy="109" r="5" fill="#b8912f"/>
+  <g>
+    <rect x="38" y="178" width="124" height="30" rx="4" fill="#0b1e3f"/>
+    <polygon points="16,178 38,178 38,208 16,208 30,193" fill="#b8912f"/>
+    <polygon points="184,178 162,178 162,208 184,208 170,193" fill="#b8912f"/>
+    <text x="100" y="200" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="700" letter-spacing="3" fill="#ffffff" text-anchor="middle">FOR.T</text>
+  </g>
+</svg>

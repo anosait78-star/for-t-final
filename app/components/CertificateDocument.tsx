@@ -45,12 +45,12 @@ export function CertificateDocument({
             />
 
             <Image
-              src="/logo.png"
+              src="/logo.svg"
               alt=""
               aria-hidden
-              width={340}
-              height={340}
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 opacity-[0.05] sm:h-[340px] sm:w-[340px]"
+              width={261}
+              height={300}
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[240px] w-auto -translate-x-1/2 -translate-y-1/2 opacity-[0.07] sm:h-[300px]"
             />
 
             <div className="relative flex flex-col items-center text-center">
@@ -62,11 +62,11 @@ export function CertificateDocument({
               />
 
               <Image
-                src="/logo.png"
+                src="/logo.svg"
                 alt="FOR T"
-                width={64}
-                height={64}
-                className="mb-3 h-16 w-16 rounded-full border border-gold-400 bg-white object-contain p-1.5"
+                width={174}
+                height={200}
+                className="mb-3 h-16 w-auto object-contain"
               />
               <div className="mb-1 font-serif-display text-lg font-semibold tracking-wide text-navy-900">
                 {dict.siteName}
